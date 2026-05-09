@@ -1,5 +1,6 @@
 from src.ingestion.weather_ingestion import WeatherIngestion
 from src.transformation.weather_transformation import WeatherTransformation
+from src.load.weather_loader import WeatherLoader
 from src.utils.logger import logger
 
 
@@ -21,13 +22,18 @@ def main():
 
         csv_path = transformation.save_csv(transformed_df)
 
+        loader = WeatherLoader()
+
+        db_path = loader.load_to_sqlite(csv_path)
+
         logger.info(
             "Pipeline ejecutado exitosamente"
         )
 
-        print(f"Raw data: {raw_path}")
-        print(f"Processed data: {processed_path}")
+        print(f"Datos en bruto: {raw_path}")
+        print(f"Datos procesados: {processed_path}")
         print(f"CSV final: {csv_path}")
+        print(f"Base de datos SQLite: {db_path}")
 
     except Exception as e:
 

@@ -14,6 +14,7 @@ data/logs/
 data/raw/
 data/processed/
 data/final/
+data/database/
 
 # Archivos del sistema operativo
 .DS_Store
