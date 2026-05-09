@@ -13,6 +13,7 @@ data/logs/
 # Datos brutos y procesados
 data/raw/
 data/processed/
+data/final/
 
 # Archivos del sistema operativo
 .DS_Store
