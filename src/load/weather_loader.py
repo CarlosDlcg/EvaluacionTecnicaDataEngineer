@@ -2,8 +2,13 @@ import os
 import sqlite3
 import pandas as pd
 
-from src.utils.logger import logger
 from src.utils.config import DB_PATH
+from src.utils.logger import setup_logger
+
+logger = setup_logger(
+    "loader_logger",
+    "loader.log"
+)
 
 
 class WeatherLoader:

@@ -1,7 +1,12 @@
 import os
 import pandas as pd
 
-from src.utils.logger import logger
+from src.utils.logger import setup_logger
+
+logger = setup_logger(
+    "transformation_logger",
+    "transformation.log"
+)
 
 
 class WeatherTransformation:

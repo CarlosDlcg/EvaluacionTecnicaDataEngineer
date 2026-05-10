@@ -11,3 +11,4 @@ BASE_URL = os.getenv("BASE_URL")
 HOURLY_FIELDS = os.getenv("HOURLY_FIELDS")
 
 DB_PATH = os.getenv("DB_PATH")
+LOG_DIR = os.getenv("LOG_DIR")

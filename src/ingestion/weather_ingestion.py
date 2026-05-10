@@ -5,7 +5,12 @@ import os
 from datetime import datetime
 
 from src.utils.config import LATITUDE, LONGITUDE, TIMEZONE, BASE_URL, HOURLY_FIELDS
-from src.utils.logger import logger
+from src.utils.logger import setup_logger
+
+logger = setup_logger(
+    "ingestion_logger",
+    "ingestion.log"
+)
 
 
 class WeatherIngestion:
