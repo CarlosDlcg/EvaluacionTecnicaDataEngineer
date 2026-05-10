@@ -79,7 +79,7 @@ EvaluacionTecnicaDataEngineer/
 # 1. Clonar el Repositorio
 
 ```bash
-git clone <https://github.com/CarlosDlcg/EvaluacionTecnicaDataEngineer.git>
+git clone https://github.com/CarlosDlcg/EvaluacionTecnicaDataEngineer.git
 ```
 
 # 2. Crear Entorno Virtual
