@@ -1,37 +1,10 @@
 # Documentación Técnica del Proyecto
 
-## Descripción General
+## Descripción del Pipeline
 
-Se desarrolló un pipeline ETL modular en Python para extraer información climática desde la API de Open-Meteo, transformar los datos utilizando Pandas, almacenarlos en SQLite y ejecutar consultas analíticas mediante SQL.
+El proyecto consiste en un pipeline ETL modular desarrollado en Python para obtener información climática desde la API de Open-Meteo. El pipeline extrae datos meteorológicos de la Ciudad de México, almacena la respuesta original de la API, parsea esta respuesta, transforma los datos utilizando Pandas y posteriormente los carga en una base de datos SQLite para realizar consultas analíticas mediante SQL.
 
-El objetivo principal fue construir una solución simple, mantenible y estructurada, aplicando conceptos fundamentales de Ingeniería de Datos.
-
----
-
-# Flujo del Pipeline
-
-```text
-Open-Meteo API
-       │
-       ▼
-Data Ingestion
-       │
-       ▼
-Raw JSON Storage
-Parsed JSON Storage
-       │
-       ▼
-Data Transformation
-       │
-       ▼
-CSV Export
-       │
-       ▼
-SQLite Load
-       │
-       ▼
-SQL Analytics
-```
+La etapa de ingestión obtiene los datos desde la API y realiza validaciones de conexión, status code y formato JSON. Posteriormente, la etapa de transformación limpia y procesa la información, incluyendo conversión de fechas, filtrado de horarios y validación de registros inválidos. Después de la transformación, se genera un archivo CSV con los datos limpios para su posterior carga en SQLite. Finalmente, la etapa de carga almacena los datos del archivo CSV en SQLite para su análisis.
 
 ---
 
@@ -39,71 +12,28 @@ SQL Analytics
 
 ## Arquitectura Modular
 
-El pipeline fue dividido en módulos independientes para separar responsabilidades y facilitar mantenimiento, escalabilidad y pruebas individuales:
-- ingestion/
-- transformation/
-- load/
-- utils/
+El pipeline fue dividido en módulos independientes (`ingestion`, `transformation`, `load` y `utils`) para separar responsabilidades y facilitar mantenimiento, escalabilidad y pruebas individuales de cada componente.
 
-Cada módulo encapsula su propia lógica, manejo de errores y logging.
+## Manejo de Errores
 
-## Separación por Capas de Datos
+Cada módulo implementa su propio manejo de excepciones y logging para encapsular errores específicos de cada etapa del pipeline. Además, se implementó logging modular mediante archivos independientes para ingestion, transformación, carga y orquestación general del pipeline.
 
-Se decidió almacenar los datos en distintas etapas del pipeline:
-- raw/: respuesta original de la API.
-- processed/: datos parseados.
-- final/: datos limpios exportados a CSV.
-- database/: persistencia SQLite.
+## Uso de Pandas y SQLite
 
-Esto permite trazabilidad, reprocesamiento y mejor organización del flujo de datos.
+Pandas fue utilizado para realizar las transformaciones tabulares y validaciones de datos debido a su simplicidad y flexibilidad para procesamiento de datasets pequeños y medianos. SQLite fue seleccionado como motor de persistencia por ser una solución ligera, portable y suficiente para el alcance de la evaluación técnica.
 
 ## Configuración Externalizada
 
-La configuración del proyecto fue desacoplada del código utilizando variables de entorno (.env) para mejorar portabilidad y mantenibilidad.
-
-Entre los parámetros configurables se encuentran:
-- endpoint de la API
-- coordenadas
-- campos solicitados
-- rutas de logs
-- ubicación de la base de datos
-
-## Logging Modular
-
-Se implementó logging independiente para cada etapa del pipeline:
-- ingestion.log
-- transformation.log
-- loader.log
-- pipeline.log
-
-Esto facilita debugging, monitoreo y observabilidad del sistema.
-
-## Uso de SQLite
-
-SQLite fue utilizado como motor de persistencia por ser una solución ligera, portable y suficiente para el alcance de la evaluación técnica.
+La configuración del proyecto fue desacoplada del código utilizando variables de entorno (`.env`) para facilitar portabilidad y mantenibilidad.
 
 ---
 
-# Dificultades Encontradas
+# Mejoras Futuras
 
-## Manejo de Imports y Modularidad
-
-Inicialmente surgieron problemas relacionados con imports entre módulos y ejecución del proyecto. Se resolvió utilizando imports absolutos y ejecutando el pipeline mediante:
-
-```bash
-python -m src.main
-```
-
-## Separación Correcta entre Datos Raw y Processed
-
-En una primera versión, los datos transformados eran almacenados como datos raw. Posteriormente se corrigió separando claramente:
-- respuesta original de la API
-- datos procesados
-
-## Manejo de JSON Inválido
-
-Se identificó la necesidad de validar explícitamente respuestas JSON inválidas para evitar fallos silenciosos durante el procesamiento de datos.
-
-## Organización del Logging
-
-Inicialmente todos los módulos escribían en un único archivo de logs. Posteriormente se implementó logging modular por componente para mejorar trazabilidad y depuración.
+Si tuviera más tiempo, implementaría:
+- pruebas automatizadas por módulo
+- exportación en formato Parquet
+- Dockerización del pipeline
+- validaciones adicionales de calidad de datos
+- orquestación del pipeline mediante herramientas como Apache Airflow
+- separación futura de componentes como servicios independientes para mejorar escalabilidad y mantenimiento
